@@ -1,0 +1,51 @@
+{
+  "name": "csyt.design",
+  "version": "1.0.0",
+  "description": "blog system for csyt",
+  "main": "none",
+  "scripts": {
+    "dev": "gulp dev",
+    "build": "gulp build",
+    "test": "none"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michael8090/csyt.design.git"
+  },
+  "keywords": [
+    "blogging",
+    "system"
+  ],
+  "author": "yong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/michael8090/csyt.design/issues"
+  },
+  "homepage": "https://github.com/michael8090/csyt.design#readme",
+  "devDependencies": {
+    "@types/koa": "^2.0.39",
+    "@types/koa-static": "^3.0.1",
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-minify-webpack-plugin": "^0.2.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-register": "^6.26.0",
+    "builtin-modules": "^1.1.1",
+    "gulp": "^3.9.1",
+    "gulp-cli": "^1.4.0",
+    "gulp-util": "^3.0.8",
+    "html-webpack-plugin": "^2.30.1",
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.6.1",
+    "run-sequence": "^2.1.0",
+    "ts-loader": "^2.3.6",
+    "typescript": "^2.5.2",
+    "webpack": "^2.2.1",
+    "webpack-merge": "^4.1.0",
+    "yargs": "^8.0.2"
+  },
+  "dependencies": {
+    "koa": "^2.3.0",
+    "koa-static": "^4.0.1"
+  }
+}

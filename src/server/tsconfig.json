@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "baseUrl": "./src",
+        "target": "es6",
+        "module": "commonjs"
+    },
+    "exclude": [
+        "node_modules"
+    ],
+    "typeAcquisition": {
+        "enable": true
+    }
+}
