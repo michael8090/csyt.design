@@ -1,12 +1,15 @@
-const Koa = require('koa');
-const koaStatic = require('koa-static');
-const path = require('path')
+import Koa from 'koa';
+import koaStatic from 'koa-static';
+import path from 'path';
+import { test } from './controller/database';
+import './global.ts';
 
 const app = new Koa();
 const port = 3000;
 
-app.use(koaStatic('build/client/'));
+app.use(koaStatic(path.resolve(__dirname, '../client/')));
 
 app.listen(port, () => {
-  console.log(`server is started on port ${port}`);
+    console.log(`server is started on port ${port}`);
+    test();
 });

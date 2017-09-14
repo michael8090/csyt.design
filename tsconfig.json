@@ -2,8 +2,11 @@
     "compilerOptions": {
         "strict": true,
         "baseUrl": "./src",
-        "target": "es6",
-        "module": "commonjs"
+        "target": "esnext",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "jsx": "react",
+        "allowSyntheticDefaultImports": true        
     },
     "exclude": [
         "node_modules"

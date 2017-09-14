@@ -1,9 +1,11 @@
 const merge = require('webpack-merge');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const MinifyPlugin = require('babel-minify-webpack-plugin');
 const common = require('./common.js');
+const webpack = require('webpack');
 
 module.exports = merge(common, {
-  plugins: [
-    new UglifyJSPlugin()
-  ]
+    plugins: [new webpack.HashedModuleIdsPlugin(), new MinifyPlugin()],
+    output: {
+        filename: '[name].[chunkhash].js',
+    },
 });

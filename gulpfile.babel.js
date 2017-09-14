@@ -3,7 +3,7 @@ import gutil from 'gulp-util';
 import yargs from 'yargs';
 import webpack from 'webpack';
 import webpackServerCommonConfig from './webpack/server/common';
-import {spawn, exec} from 'child_process';
+import { spawn, exec } from 'child_process';
 import runSequnce from 'run-sequence';
 import rimraf from 'rimraf';
 import fs from 'fs';
@@ -19,22 +19,21 @@ process.env.NODE_ENV = isDev ? 'develop' : 'production';
 
 gutil.log(`it's on ${process.env.NODE_ENV} mode`);
 
-
-gulp.task('clean', function () {
+gulp.task('clean', function() {
     rimraf.sync('build');
 });
 
 function webpackBuild(webpackConfig, done, onUpdate) {
     webpack(webpackConfig, function(err, stats) {
-        if(err) throw new gutil.PluginError("webpack", err);
-        gutil.log("[webpack]", stats.toString('minimal'));
+        if (err) throw new gutil.PluginError('webpack', err);
+        gutil.log('[webpack]', stats.toString('minimal'));
         if (isDev) {
             gutil.log('watching...');
             if (onUpdate) {
                 onUpdate();
             }
         } else {
-            done();                       
+            done();
         }
     });
 }
@@ -46,10 +45,12 @@ function restartServer() {
     if (serverProcess) {
         serverProcess.kill();
     }
-    serverProcess = spawn('node', ['build/server/server.bundle.js']);
-    serverProcess.stdout.on('data', (message) => gutil.log(message.toString()));
-    serverProcess.stderr.on('data', (message) => gutil.log(message.toString()));
-    
+    serverProcess = spawn('node', ['server.js'], {
+        cwd: 'build/server',
+    });
+    serverProcess.stdout.on('data', message => gutil.log(message.toString()));
+    serverProcess.stderr.on('data', message => gutil.log(message.toString()));
+
     serverProcess.on('exit', () => gutil.log('server is stopped'));
 }
 
@@ -79,7 +80,7 @@ function installPackages(newPackages = []) {
             inOutputFolder(() => {
                 gutil.log(`installing ${packageName}`);
                 mkdirp('node_modules');
-                exec(`npm install ${packageName}`, (error) => {
+                exec(`npm install ${packageName}`, error => {
                     if (error) {
                         reject(error);
                     } else {
@@ -94,7 +95,7 @@ function installPackages(newPackages = []) {
     for (let p of packages) {
         const isInOldPackages = oldPackages.indexOf(p) !== -1;
         const isInNewPackages = newPackages.indexOf(p) !== -1;
-        
+
         if (isInOldPackages !== isInNewPackages) {
             if (isInOldPackages) {
                 remove(p);
@@ -111,7 +112,7 @@ function scanPackages(str) {
     const regex = /require\(\"(.*)\"\)/g;
     let match;
     const packages = [];
-    while ( match = regex.exec(str)) {
+    while ((match = regex.exec(str))) {
         if (match) {
             const [t, pachageName] = match;
             if (pachageName) {
@@ -125,21 +126,36 @@ function scanPackages(str) {
 }
 
 function syncPackage() {
-    return installPackages(scanPackages(fs.readFileSync(path.resolve(serverOutputFolder, 'server.bundle.js')).toString()));
+    return installPackages(
+        scanPackages(
+            fs
+                .readFileSync(path.resolve(serverOutputFolder, 'server.js'))
+                .toString()
+        )
+    );
 }
 
-gulp.task('build-client', function (done) {
-    webpackBuild(isDev ? require('./webpack/client/develop') : require('./webpack/client/production'), done);
+gulp.task('build-client', function(done) {
+    webpackBuild(
+        isDev
+            ? require('./webpack/client/develop')
+            : require('./webpack/client/production'),
+        done
+    );
 });
 
-gulp.task('build-server', function (done) {
-    webpackBuild(isDev ? require('./webpack/server/develop') : require('./webpack/server/production'), () => {
-        syncPackage().then(done);
-    }, () => {
-        syncPackage().then(restartServer);   
-    });
+gulp.task('build-server', function(done) {
+    webpackBuild(
+        isDev
+            ? require('./webpack/server/develop')
+            : require('./webpack/server/production'),
+        done,
+        restartServer
+    );
 });
 
 gulp.task('start-server', restartServer);
 
-gulp.task('build', ['clean'], () => runSequnce(['build-server', 'build-client']));
+gulp.task('build', ['clean'], () =>
+    runSequnce(['build-server', 'build-client'])
+);

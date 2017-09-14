@@ -1,0 +1,35 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #f7f7f7;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.app {
+    -webkit-font-smoothing: antialiased;
+    font-size: 48pt;
+    font-family: sans-serif;
+    color: #7f7f7f;
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    &.gentle-appear {
+        opacity: 0;
+        transform: translate(-50%, 0);
+                
+        &.gentle-appear-active {
+            opacity: 1;
+            transform: translate(-50%, -50%);
+            transition-property: opacity, transform;
+            transition-delay: 0.3s;
+            transition-duration: 0.2s;
+            transition-timing-function: ease-in;
+        }
+    }    
+}
+
